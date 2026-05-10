@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OMAC International — Educational Subgroup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:    #0a1628;
+      --royal:   #1a3a6b;
+      --gold:    #c9963a;
+      --gold-lt: #e8b85a;
+      --cream:   #f7f3ec;
+      --white:   #ffffff;
+      --text:    #2c2c2c;
+      --muted:   #6b6b6b;
+      --card-bg: rgba(255,255,255,0.07);
+      --border:  rgba(201,150,58,0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(10,22,40,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand { display: flex; align-items: center; gap: .75rem; }
+    .nav-logo {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--royal));
+      display: grid; place-items: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600; color: #fff;
+      letter-spacing: .05em;
+    }
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 600;
+      letter-spacing: .08em; color: var(--cream);
+      line-height: 1.2;
+    }
+    .nav-name span { display: block; font-size: .7rem; font-weight: 300; color: var(--gold); letter-spacing: .18em; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: rgba(255,255,255,0.7);
+      font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--navy);
+      padding: .55rem 1.4rem; border-radius: 2px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; transition: background .3s, transform .2s;
+    }
+    .nav-cta:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      position: relative; overflow: hidden;
+      padding: 8rem 5vw 5rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: -1;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 50%, rgba(26,58,107,0.6) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 30%, rgba(201,150,58,0.12) 0%, transparent 60%),
+        linear-gradient(160deg, #07111f 0%, #0a1628 40%, #0f1e38 100%);
+    }
+    /* Diagonal golden rule */
+    .hero-bg::after {
+      content: '';
+      position: absolute; top: 0; right: 15%;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+      opacity: .18;
+    }
+    .hero-inner { max-width: 900px; text-align: center; }
+    .hero-tag {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold); padding: .35rem 1.2rem;
+      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+      margin-bottom: 2rem;
+      animation: fadeDown .8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.1;
+      margin-bottom: 1.2rem;
+      animation: fadeUp .9s .15s ease both;
+    }
+    .hero h1 em {
+      font-style: italic; color: var(--gold);
+      font-family: 'Cormorant Garamond', serif; font-size: 1.1em;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300; line-height: 1.8;
+      color: rgba(255,255,255,0.72); max-width: 680px; margin: 0 auto 2.8rem;
+      animation: fadeUp .9s .3s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .9s .45s ease both;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--navy);
+      padding: .85rem 2.2rem; border-radius: 2px;
+      font-weight: 600; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; transition: all .3s;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(201,150,58,0.3); }
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.35); color: var(--white);
+      padding: .85rem 2.2rem; border-radius: 2px;
+      font-weight: 400; font-size: .9rem; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; transition: all .3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Floating orbs */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: .15; pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 400px; height: 400px; background: var(--royal); top: -10%; left: -10%; animation-delay: 0s; }
+    .orb-2 { width: 300px; height: 300px; background: var(--gold); bottom: 10%; right: -5%; animation-delay: 3s; }
+    @keyframes drift { from { transform: translate(0,0); } to { transform: translate(30px, 20px); } }
+
+    /* scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      opacity: .5; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+      animation: fadeIn 1s 1.2s both;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: grow 1.5s 1.4s ease both;
+    }
+    @keyframes grow { from { height: 0; } to { height: 40px; } }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--royal);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 2rem 5vw;
+      display: flex; justify-content: center; gap: clamp(2rem, 6vw, 6rem); flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 600; color: var(--gold); line-height: 1;
+    }
+    .stat-lbl { font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; opacity: .7; margin-top: .3rem; }
+
+    /* ── SECTIONS SHARED ── */
+    section { padding: 6rem 5vw; position: relative; }
+    .section-tag {
+      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .section-body {
+      font-size: 1rem; line-height: 1.85; color: rgba(255,255,255,0.72);
+      max-width: 620px;
+    }
+    .gold-rule {
+      width: 60px; height: 2px; background: var(--gold);
+      margin: 1.2rem 0;
+    }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy { background: #091220; }
+    .philosophy-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .philosophy-visual {
+      position: relative; height: 420px;
+    }
+    .phil-card {
+      position: absolute;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 1.6rem;
+      border-radius: 3px;
+    }
+    .phil-card-1 { top: 0; left: 0; width: 65%; }
+    .phil-card-2 { bottom: 0; right: 0; width: 70%; }
+    .phil-card-3 { top: 50%; left: 50%; transform: translate(-40%, -50%); width: 55%; }
+    .phil-icon { font-size: 1.8rem; margin-bottom: .5rem; }
+    .phil-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: .4rem; }
+    .phil-card p { font-size: .82rem; line-height: 1.6; color: rgba(255,255,255,0.65); }
+
+    /* ── PROGRAMS ── */
+    .programs { background: var(--navy); }
+    .programs-header { text-align: center; max-width: 700px; margin: 0 auto 4rem; }
+    .programs-header .gold-rule { margin: 1.2rem auto; }
+    .programs-header .section-body { margin: 0 auto; }
+    .programs-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+    }
+    .program-card {
+      background: linear-gradient(145deg, rgba(26,58,107,0.4), rgba(10,22,40,0.6));
+      border: 1px solid var(--border);
+      padding: 2.2rem 2rem; border-radius: 3px;
+      position: relative; overflow: hidden;
+      transition: transform .35s, box-shadow .35s;
+      cursor: default;
+    }
+    .program-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity .35s;
+    }
+    .program-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+    .program-card:hover::before { opacity: 1; }
+    .program-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300;
+      color: rgba(201,150,58,0.18); line-height: 1;
+      margin-bottom: -.5rem;
+    }
+    .program-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .program-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 600; color: var(--cream);
+      margin-bottom: .6rem;
+    }
+    .program-card p { font-size: .88rem; line-height: 1.75; color: rgba(255,255,255,0.62); }
+    .program-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.2rem; }
+    .tag {
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      border: 1px solid rgba(201,150,58,0.35); color: var(--gold);
+      padding: .2rem .65rem; border-radius: 1px;
+    }
+
+    /* ── METHODOLOGY ── */
+    .methodology { background: #091220; }
+    .method-wrap { max-width: 1200px; margin: 0 auto; }
+    .method-intro { max-width: 600px; margin-bottom: 4rem; }
+    .method-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0; }
+    .method-step {
+      padding: 2.5rem 2rem;
+      border-left: 1px solid var(--border);
+      position: relative;
+      transition: background .3s;
+    }
+    .method-step:hover { background: rgba(26,58,107,0.2); }
+    .method-step:first-child { border-left: none; }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .85rem; letter-spacing: .18em; color: var(--gold); margin-bottom: 1rem;
+    }
+    .method-step h4 { font-size: 1rem; font-weight: 600; margin-bottom: .6rem; color: var(--cream); }
+    .method-step p { font-size: .82rem; line-height: 1.75; color: rgba(255,255,255,0.6); }
+
+    /* ── RESULTS ── */
+    .results { background: var(--navy); }
+    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .results-list { list-style: none; }
+    .results-list li {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+      font-size: .95rem; line-height: 1.6; color: rgba(255,255,255,0.75);
+    }
+    .results-list li::before {
+      content: '✦'; color: var(--gold); font-size: .7rem; margin-top: .3rem; flex-shrink: 0;
+    }
+    .results-quote {
+      background: linear-gradient(135deg, var(--royal), rgba(10,22,40,0.9));
+      border: 1px solid var(--border); border-radius: 3px;
+      padding: 3rem 2.5rem; position: relative;
+    }
+    .results-quote::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem; color: var(--gold); opacity: .25;
+      position: absolute; top: .5rem; left: 1.5rem; line-height: 1;
+    }
+    .results-quote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-style: italic; line-height: 1.7;
+      color: var(--cream); position: relative; z-index: 1;
+    }
+    .results-quote cite {
+      display: block; margin-top: 1.5rem;
+      font-size: .8rem; font-style: normal; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--gold); opacity: .8;
+    }
+
+    /* ── WHY OMAC ── */
+    .why { background: #091220; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 3rem auto 0; }
+    .why-item {
+      padding: 2rem 1.8rem;
+      border: 1px solid var(--border); border-radius: 3px;
+      background: rgba(26,58,107,0.15);
+      transition: border-color .3s, background .3s;
+    }
+    .why-item:hover { border-color: var(--gold); background: rgba(26,58,107,0.3); }
+    .why-item .wi-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .why-item h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--cream); margin-bottom: .5rem; }
+    .why-item p { font-size: .85rem; line-height: 1.7; color: rgba(255,255,255,0.6); }
+
+    /* ── PARENT / COMPANY PORTFOLIOS ── */
+    .portfolios { background: var(--navy); }
+    .port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 3rem auto 0; }
+    .port-card {
+      text-align: center; padding: 2.5rem 1.5rem;
+      border: 1px solid var(--border); border-radius: 3px;
+      position: relative; overflow: hidden; transition: transform .3s;
+    }
+    .port-card:hover { transform: translateY(-4px); }
+    .port-card.active { border-color: var(--gold); }
+    .port-card.active::after {
+      content: 'Current Page'; position: absolute; top: .8rem; right: .8rem;
+      font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--navy); background: var(--gold); padding: .15rem .5rem;
+    }
+    .port-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .port-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; color: var(--cream); margin-bottom: .5rem; }
+    .port-card p { font-size: .82rem; line-height: 1.65; color: rgba(255,255,255,0.55); }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: linear-gradient(145deg, var(--royal) 0%, var(--navy) 60%);
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 6rem 5vw;
+    }
+    .contact .section-title { margin-bottom: .5rem; }
+    .contact .section-body { margin: 0 auto 3rem; text-align: center; }
+    .contact-cards {
+      display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .contact-card {
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      padding: 2rem 2.5rem; border-radius: 3px; min-width: 220px;
+      transition: background .3s;
+    }
+    .contact-card:hover { background: rgba(255,255,255,0.1); }
+    .contact-card .cc-icon { font-size: 1.8rem; margin-bottom: .8rem; }
+    .contact-card .cc-lbl { font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: .4rem; }
+    .contact-card .cc-val { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--cream); }
+    .wa-btn {
+      display: inline-flex; align-items: center; gap: .7rem;
+      background: #25D366; color: var(--navy);
+      padding: 1rem 2.5rem; border-radius: 2px;
+      font-weight: 600; font-size: .95rem; letter-spacing: .05em;
+      text-decoration: none; transition: all .3s;
+    }
+    .wa-btn:hover { background: #1ebe5c; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,211,102,0.3); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #060e18;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 2.5rem 5vw;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: gap;
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 600; color: var(--cream);
+    }
+    .footer-brand span { display: block; font-size: .65rem; font-weight: 300; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-top: .15rem; }
+    footer p { font-size: .78rem; color: rgba(255,255,255,0.35); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: .5; } }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width: 800px) {
+      .philosophy-grid, .results-grid { grid-template-columns: 1fr; }
+      .philosophy-visual { display: none; }
+      .port-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .method-steps { grid-template-columns: 1fr 1fr; }
+      .method-step { border-left: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">OI</div>
+    <div class="nav-name">
+      OMAC International
+      <span>Educational Subgroup</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#methodology">Approach</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Enroll Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="hero-inner">
+    <div class="hero-tag">OMAC International · Educational Subgroup</div>
+    <h1>Education That <em>Stays</em><br>With You Forever</h1>
+    <p class="hero-sub">
+      We believe true learning is not memorisation — it is understanding. Our concept-based approach builds lasting knowledge, restores student confidence, and transforms results from ordinary to exceptional.
+    </p>
+    <div class="hero-btns">
+      <a href="#programs" class="btn-primary">Explore Programs</a>
+      <a href="#contact" class="btn-outline">Talk to Us</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat reveal">
+    <div class="stat-num">500+</div>
+    <div class="stat-lbl">Students Served</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">95%</div>
+    <div class="stat-lbl">Grade Improvement</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">100%</div>
+    <div class="stat-lbl">Concept-Based</div>
+  </div>
+  <div class="stat reveal">
+    <div class="stat-num">3</div>
+    <div class="stat-lbl">OMAC Portfolios</div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy" id="about">
+  <div class="philosophy-grid">
+    <div>
+      <p class="section-tag reveal">Our Philosophy</p>
+      <h2 class="section-title reveal">Concepts Over<br>Cramming</h2>
+      <div class="gold-rule reveal"></div>
+      <p class="section-body reveal">
+        At OMAC International Educational Subgroup, we have reimagined what quality education means. A student who truly understands the <em>why</em> and <em>how</em> behind a topic will never forget it — because it lives in their reasoning, not just their memory.
+      </p>
+      <p class="section-body reveal" style="margin-top:1rem;">
+        Our pedagogy is engineered to build conceptual clarity first, then reinforce it with structured practice — resulting in students who walk into examinations with genuine confidence, not mere hope.
+      </p>
+    </div>
+    <div class="philosophy-visual">
+      <div class="phil-card phil-card-1 reveal">
+        <div class="phil-icon">🧠</div>
+        <h4>Deep Understanding</h4>
+        <p>Concepts are explained from first principles, making retention effortless and lasting.</p>
+      </div>
+      <div class="phil-card phil-card-3 reveal">
+        <div class="phil-icon">🌟</div>
+        <h4>Student Confidence</h4>
+        <p>When students understand, fear disappears. Confidence becomes their natural state.</p>
+      </div>
+      <div class="phil-card phil-card-2 reveal">
+        <div class="phil-icon">🏆</div>
+        <h4>Exceptional Grades</h4>
+        <p>Understanding + Confidence = Outstanding academic performance, consistently.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+<section class="programs" id="programs">
+  <div class="programs-header">
+    <p class="section-tag reveal">What We Offer</p>
+    <h2 class="section-title reveal">Our Academic Programs</h2>
+    <div class="gold-rule reveal"></div>
+    <p class="section-body reveal">
+      Carefully designed programs for every stage of a student's academic journey — from foundation to advanced levels — all built on our signature concept-first methodology.
+    </p>
+  </div>
+
+  <div class="programs-grid">
+
+    <div class="program-card reveal">
+      <div class="program-num">01</div>
+      <div class="program-icon">📐</div>
+      <h3>Mathematics & Sciences</h3>
+      <p>From algebra to advanced physics and chemistry — we break complex problems into understandable building blocks so students can solve anything with clarity.</p>
+      <div class="program-tags">
+        <span class="tag">Matric</span>
+        <span class="tag">Intermediate</span>
+        <span class="tag">O/A Levels</span>
+      </div>
+    </div>
+
+    <div class="program-card reveal">
+      <div class="program-num">02</div>
+      <div class="program-icon">📖</div>
+      <h3>Languages & Humanities</h3>
+      <p>English, Urdu, Islamiat, Pakistan Studies — taught with depth and context so students articulate ideas powerfully in both written and spoken form.</p>
+      <div class="program-tags">
+        <span class="tag">English</span>
+        <span class="tag">Urdu</span>
+        <span class="tag">Social Sciences</span>
+      </div>
+    </div>
+
+    <div class="program-card reveal">
+      <div class="program-num">03</div>
+      <div class="program-icon">💡</div>
+      <h3>Concept Bootcamps</h3>
+      <p>Intensive short-course bootcamps designed to repair foundational gaps before exams — targeted, efficient, and transformative for struggling students.</p>
+      <div class="program-tags">
+        <span class="tag">Pre-Exam</span>
+        <span class="tag">Remedial</span>
+        <span class="tag">Fast-Track</span>
+      </div>
+    </div>
+
+    <div class="program-card reveal">
+      <div class="program-num">04</div>
+      <div class="program-icon">🧪</div>
+      <h3>Lab & Practical Skills</h3>
+      <p>Hands-on practical sessions aligned with board requirements, ensuring students score full marks in practical examinations alongside theory.</p>
+      <div class="program-tags">
+        <span class="tag">Biology</span>
+        <span class="tag">Chemistry</span>
+        <span class="tag">Physics</span>
+      </div>
+    </div>
+
+    <div class="program-card reveal">
+      <div class="program-num">05</div>
+      <div class="program-icon">🎯</div>
+      <h3>Entry Test Preparation</h3>
+      <p>MDCAT, ECAT, NTS, and university entry test preparation with concept-based drilling, past paper analysis, and personalised feedback cycles.</p>
+      <div class="program-tags">
+        <span class="tag">MDCAT</span>
+        <span class="tag">ECAT</span>
+        <span class="tag">NTS</span>
+      </div>
+    </div>
+
+    <div class="program-card reveal">
+      <div class="program-num">06</div>
+      <div class="program-icon">👨‍👩‍👧</div>
+      <h3>Parent Progress Reporting</h3>
+      <p>Regular structured feedback to parents on conceptual milestones, confidence indicators, and grade projections — education is a family journey.</p>
+      <div class="program-tags">
+        <span class="tag">Monthly Reports</span>
+        <span class="tag">Consultations</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="methodology" id="methodology">
+  <div class="method-wrap">
+    <div class="method-intro">
+      <p class="section-tag reveal">How We Teach</p>
+      <h2 class="section-title reveal">The OMAC 4-Step<br>Learning Framework</h2>
+      <div class="gold-rule reveal"></div>
+      <p class="section-body reveal">Every lesson follows a proven sequence that moves a student from confusion to complete mastery — in a single session.</p>
+    </div>
+
+    <div class="method-steps">
+      <div class="method-step reveal">
+        <div class="step-num">STEP 01</div>
+        <h4>Concept Anchoring</h4>
+        <p>We connect new knowledge to what students already know — creating an anchor that makes new ideas feel familiar and intuitive.</p>
+      </div>
+      <div class="method-step reveal">
+        <div class="step-num">STEP 02</div>
+        <h4>Visual Deconstruction</h4>
+        <p>Complex topics are broken into visual diagrams, analogies, and real-world examples that make abstract ideas concrete and memorable.</p>
+      </div>
+      <div class="method-step reveal">
+        <div class="step-num">STEP 03</div>
+        <h4>Active Recall Practice</h4>
+        <p>Students explain concepts back in their own words, solving problems without looking — cementing deep retention and building confidence.</p>
+      </div>
+      <div class="method-step reveal">
+        <div class="step-num">STEP 04</div>
+        <h4>Exam Application</h4>
+        <p>Past papers and exam-style questions are solved together, bridging the gap between understanding and scoring maximum marks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results" id="results">
+  <div class="results-grid">
+    <div>
+      <p class="section-tag reveal">What Students Achieve</p>
+      <h2 class="section-title reveal">Real Results,<br>Real Confidence</h2>
+      <div class="gold-rule reveal"></div>
+      <ul class="results-list reveal">
+        <li>Students remember concepts months and years after learning — not just for the exam</li>
+        <li>Grade improvements of 30–50% seen within a single academic term</li>
+        <li>Students gain the ability to tackle unseen questions with independent reasoning</li>
+        <li>Anxiety and exam fear replaced by structured preparation and calm confidence</li>
+        <li>Parents report visible increase in self-study habits and academic motivation</li>
+        <li>Entry test success rates significantly above national averages</li>
+      </ul>
+    </div>
+    <div class="results-quote reveal">
+      <p>
+        "Quality education is not about filling a bucket — it is about lighting a fire. When a student truly understands, they carry that knowledge with them for life."
+      </p>
+      <cite>— OMAC International · Educational Philosophy</cite>
+    </div>
+  </div>
+</section>
+
+<!-- WHY OMAC -->
+<section class="why">
+  <div style="max-width:1200px;margin:0 auto;">
+    <p class="section-tag reveal">Why Choose Us</p>
+    <h2 class="section-title reveal">The OMAC Difference</h2>
+    <div class="gold-rule reveal"></div>
+    <div class="why-grid">
+      <div class="why-item reveal">
+        <div class="wi-icon">🎓</div>
+        <h4>Expert Educators</h4>
+        <p>Experienced subject specialists who are passionate about conceptual teaching and student transformation.</p>
+      </div>
+      <div class="why-item reveal">
+        <div class="wi-icon">🔬</div>
+        <h4>Concept-First Always</h4>
+        <p>Every topic begins with building a rock-solid conceptual foundation before moving to practice.</p>
+      </div>
+      <div class="why-item reveal">
+        <div class="wi-icon">📊</div>
+        <h4>Progress Tracking</h4>
+        <p>Continuous assessment ensures no student falls behind — every gap is identified and addressed.</p>
+      </div>
+      <div class="why-item reveal">
+        <div class="wi-icon">🤝</div>
+        <h4>Consultancy Backed</h4>
+        <p>As a division of OMAC International, we bring corporate standards of excellence to education.</p>
+      </div>
+      <div class="why-item reveal">
+        <div class="wi-icon">💬</div>
+        <h4>Personalised Approach</h4>
+        <p>Every student learns differently. Our educators adapt pace and method to each individual's needs.</p>
+      </div>
+      <div class="why-item reveal">
+        <div class="wi-icon">🚀</div>
+        <h4>Confidence Building</h4>
+        <p>We measure success not just in grades, but in the confidence students carry into every exam hall.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARENT PORTFOLIOS -->
+<section class="portfolios">
+  <div style="max-width:1200px;margin:0 auto;text-align:center;">
+    <p class="section-tag reveal">OMAC International</p>
+    <h2 class="section-title reveal">Our Three Portfolios</h2>
+    <div class="gold-rule reveal" style="margin:1.2rem auto;"></div>
+    <div class="port-grid">
+      <div class="port-card reveal">
+        <div class="port-icon">📋</div>
+        <h3>ISO Consultancy</h3>
+        <p>Professional ISO certification consulting — helping organisations achieve global quality management standards with expert guidance.</p>
+      </div>
+      <div class="port-card reveal">
+        <div class="port-icon">📈</div>
+        <h3>Data Analytics</h3>
+        <p>Business intelligence, data-driven decision making, and analytics consulting for organisations ready to compete in the data era.</p>
+      </div>
+      <div class="port-card active reveal">
+        <div class="port-icon">🎓</div>
+        <h3>Educational Subgroup</h3>
+        <p>Concept-based quality education that builds lasting understanding, restores student confidence, and delivers outstanding grades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-tag reveal">Get In Touch</p>
+  <h2 class="section-title reveal">Begin Your Learning Journey</h2>
+  <div class="gold-rule reveal" style="margin:1.2rem auto;"></div>
+  <p class="section-body reveal">
+    Ready to experience education that truly makes a difference? Reach out today and let us help your child unlock their full potential.
+  </p>
+
+  <div class="contact-cards reveal">
+    <div class="contact-card">
+      <div class="cc-icon">📱</div>
+      <div class="cc-lbl">WhatsApp & Call</div>
+      <div class="cc-val">+92 301 4566652</div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">🏢</div>
+      <div class="cc-lbl">Organisation</div>
+      <div class="cc-val">OMAC International</div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">📚</div>
+      <div class="cc-lbl">Division</div>
+      <div class="cc-val">Educational Subgroup</div>
+    </div>
+  </div>
+
+  <a href="https://wa.me/923014566652" target="_blank" class="wa-btn reveal">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Chat on WhatsApp
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    OMAC International
+    <span>Educational Subgroup</span>
+  </div>
+  <p>© 2025 OMAC International. All rights reserved. · Lahore, Pakistan</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+
+</body>
+</html>
